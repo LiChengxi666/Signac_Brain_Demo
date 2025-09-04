@@ -5,7 +5,7 @@ Signac 是 2021 年由 Tim 等发表于 Nature Methods 上的一种用于单细�
 
 Signac 主要实现的功能包含识别非细胞含量条码中的背景细胞、峰值调用、基因组区域的计数定量、细胞的质量控制筛选、降维、聚类、与单细胞基因表达数据的整合、交互式基因组浏览器风格的数据可视化、差异可达峰的识别、富集DNA序列基序的检测、转录因子结合位点的分析以及将峰与潜在调控目标基因关联等。此外，Signac还提供了一个框架，用于从单细胞DNA可及性实验中鉴定线粒体基因组变异，从而实现单细胞中克隆关系与DNA可及性联合分析。
 #### Signac 基本工作流
-![](plots\1.png)
+![]([plots\1.png](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot.png))
 Seurat包采用Seurat对象作为其核心数据结构。Seurat对象由多个Assay对象组成，每个Assay对象包含单细胞的相关数据。Assay对象最初用于单细胞基因表达数据的分析，支持原始及处理后单细胞测量值和与每个特征相关的元数据的存储与检索。为了在Seurat框架内便于单细胞染色质数据的分析，Signac 加入了一种专用的 `ChromatinAssay` 对象类。`ChromatinAssay` 允许存储和检索分析单细胞染色质数据所需的信息，包括与每个实验特征相关的基因组范围、基因注释、基因组版本信息、DNA基序信息，以及作为tabix索引片段文件存储的单细胞数据。Signac 框架将在用 Seurat 读取单细胞测序数据的基础上，以fragments 形式读取 ATAC数据，之后进行质控、聚类、连接计算等一系列计算任务。
 #### 数据集概述
 本次实验分析了 10x Genomics 上公开的一份 Human Brain Single Cell Multiomics 数据集，具体连接点击[此处](https://www.10xgenomics.com/datasets/frozen-human-healthy-brain-tissue-3-k-1-standard-1-0-0)查看。该数据集为人类健康脑组织的 ATAC 和基因表达单细胞测序，均采用由 10x Genomics 处理好的输出文件（区别于原始的 `.bam` 或 `.fq`，等格式，具体如下：
