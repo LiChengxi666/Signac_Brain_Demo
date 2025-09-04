@@ -5,7 +5,7 @@ Signac 是 2021 年由 Tim 等发表于 Nature Methods 上的一种用于单细�
 
 Signac 主要实现的功能包含识别非细胞含量条码中的背景细胞、峰值调用、基因组区域的计数定量、细胞的质量控制筛选、降维、聚类、与单细胞基因表达数据的整合、交互式基因组浏览器风格的数据可视化、差异可达峰的识别、富集DNA序列基序的检测、转录因子结合位点的分析以及将峰与潜在调控目标基因关联等。此外，Signac还提供了一个框架，用于从单细胞DNA可及性实验中鉴定线粒体基因组变异，从而实现单细胞中克隆关系与DNA可及性联合分析。
 #### Signac 基本工作流
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/1.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/1.png)
 Seurat包采用Seurat对象作为其核心数据结构。Seurat对象由多个Assay对象组成，每个Assay对象包含单细胞的相关数据。Assay对象最初用于单细胞基因表达数据的分析，支持原始及处理后单细胞测量值和与每个特征相关的元数据的存储与检索。为了在Seurat框架内便于单细胞染色质数据的分析，Signac 加入了一种专用的 `ChromatinAssay` 对象类。`ChromatinAssay` 允许存储和检索分析单细胞染色质数据所需的信息，包括与每个实验特征相关的基因组范围、基因注释、基因组版本信息、DNA基序信息，以及作为tabix索引片段文件存储的单细胞数据。Signac 框架将在用 Seurat 读取单细胞测序数据的基础上，以fragments 形式读取 ATAC数据，之后进行质控、聚类、连接计算等一系列计算任务。
 #### 数据集概述
 本次实验分析了 10x Genomics 上公开的一份 Human Brain Single Cell Multiomics 数据集，具体连接点击[此处](https://www.10xgenomics.com/datasets/frozen-human-healthy-brain-tissue-3-k-1-standard-1-0-0)查看。该数据集为人类健康脑组织的 ATAC 和基因表达单细胞测序，均采用由 10x Genomics 处理好的输出文件（区别于原始的 `.bam` 或 `.fq`，等格式，具体如下：
@@ -144,7 +144,7 @@ DensityScatter(brain,
                log_x = TRUE, 
                quantiles = TRUE)
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot01.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot01.png)
 ```
 VlnPlot(
   object = brain,
@@ -153,7 +153,7 @@ VlnPlot(
   pt.size = 0
 )
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot.png)
 之后筛选出符合条件的数据：
 ```
 brain <- subset(
@@ -171,7 +171,7 @@ brain
 ```
 FragmentHistogram(object = brain, group.by = "VSN_cell_type")
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot04.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot04.png)
 #### 数据处理
 使用 SCTransform 对基因表达数据进行归一化，并使用 PCA 进行降维。
 ```
@@ -208,7 +208,7 @@ brain <- RunUMAP(
 
 DimPlot(brain, label = TRUE, repel = TRUE, reduction = "umap") + NoLegend()
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot02.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot02.png)
 #### 峰与基因链接计算
 对于每个基因，通过计算基因表达与邻近峰的可及性之间的相关性，并校正由 GC 含量、总体可及性和峰大小引起的偏差，找到可能调控该基因的一组峰。
 
@@ -275,7 +275,7 @@ p2 <- CoveragePlot(
 
 patchwork::wrap_plots(p1, p2, ncol = 1)
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot03.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot03.png)
 这里选取了`MBP`和`RBFOX3`两个基因，可以看到二者分别在与之相关的胶质细胞和神经元细胞中高表达，相关区域染色质可及性信号也较强。
 #### 特定基因特征可视化
 可以通过 `DotPlot()` 函数和 `FeaturePlot()` 函数以点状热图和降维散点图的形式可视化差异基因表达。
@@ -295,8 +295,8 @@ FeaturePlot(
   ncol = 5
 )
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot05.png)
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot14.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot05.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot14.png)
 #### 寻找差异化标记
 除去人为选择，`Signac` 也提供了 `FindMarkers()` 函数，用于寻找所有基因的差异化标记。下面以比较神经元细胞和胶质细胞的 ATAC peaks 为例进行展示：
 ```
@@ -353,8 +353,8 @@ plot3 <- DotPlot(brain,
 combined_plot <- plot1 | plot2 | plot3
 print(combined_plot)
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot07.png)
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot09.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot07.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot09.png)
 同时，使用 `CoveragePlot()` 也可以可视化这些peaks相关的区域信息。
 ```
 CoveragePlot(
@@ -370,7 +370,7 @@ CoveragePlot(
   extend.downstream = 10000
 )
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot11.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot11.png)
 相似的代码可以用于寻找基因表达的标记：
 ```
 DefaultAssay(brain) <- "SCT" 
@@ -433,7 +433,7 @@ MotifPlot(
   motifs = head(rownames(enriched.motifs))
 )
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot08.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot08.png)
 #### 转录因子足迹分析
 依据之前找到的基序，使用 `Footprint()` 可以计算绘制其对应的转录因子足迹信息，`PlotFootprint()` 函数可以进行可视化:
 ```
@@ -447,6 +447,6 @@ brain <- Footprint(
 p2 <- PlotFootprint(brain, features = c("NRF1"))
 p2 + patchwork::plot_layout(ncol = 1)
 ```
-![](https://github.com/LiChengxi666/Signac_Brain_Demo.github.io/blob/main/plots/Rplot13.png)
+![](https://github.com/LiChengxi666/Signac_Brain_Demo/blob/main/plots/Rplot13.png)
 ### 总结
 作为一个单细胞数据分析框架，Signac 的一大特点是其与通用的 Seurat 兼容性高，并且提供了较为丰富的功能。同时其环境支持性好，部署相对简单，可以作为分析 ATAC-seq 数据的参考工具。但是其相比更为常用的 ArchR，也存在运行速度慢、对原始数据支持较差的缺点
